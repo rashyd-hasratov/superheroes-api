@@ -1,7 +1,21 @@
 import { sequelize } from '../config/db';
-import { DataTypes } from 'sequelize';
+import {
+  DataTypes,
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+} from 'sequelize';
 
-export const Superhero = sequelize.define('superhero', {
+export interface SuperheroModel extends Model<InferAttributes<SuperheroModel>, InferCreationAttributes<SuperheroModel>> {
+  nickname: string;
+  real_name: string;
+  origin_description: string;
+  superpowers: string;
+  catch_phrase: string;
+  images: string[];
+}
+
+export const Superhero = sequelize.define<SuperheroModel>('superhero', {
   nickname: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -30,13 +44,15 @@ export const Superhero = sequelize.define('superhero', {
 
   images: {
     type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: false,
   },
 }, {
   tableName: 'superheroes',
-  createdAt: false,
+  // createdAt: false,
   updatedAt: false,
 });
 
-Superhero.sync().then(() => {
+Superhero.sync()
+  .then(() => {
   console.log("Superhero Model synced");
 });
