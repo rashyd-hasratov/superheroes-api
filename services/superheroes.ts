@@ -5,6 +5,9 @@ export const getAll = async (page: number) => {
   const foundSuperheroes = await Superhero.findAll({
     offset: (page - 1) * 5,
     limit: 5,
+    order: [
+      ['createdAt', 'DESC'],
+    ],
   });
 
   return foundSuperheroes;
